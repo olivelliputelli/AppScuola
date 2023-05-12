@@ -5,7 +5,8 @@ namespace AppScuola.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<ClasseStudenti> ClassiStudenti { get; set; }
+        public DbSet<ClasseStudenti> ClassiStudenti { get; set; } /* VISTA */
+        public DbSet<Classe> Classi { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

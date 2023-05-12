@@ -1,14 +1,38 @@
-﻿@page "/"
+﻿@page "/gestioneclassi"
 
 @using Microsoft.EntityFrameworkCore
 
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Gestione Classi</PageTitle>
 
-<h1> Vista ClassiStudenti</h1>
+<h1>Classi</h1>
 
-@if (ClassiStudenti == null)
+<EditForm Model="@classe" OnValidSubmit="AddUpdate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>
+        Sigla classe:
+        <InputText @bind-Value="classe.Sigla" />
+    </label>
+    <label>
+        Nome esteso:
+        <InputText @bind-Value="classe.NomeEsteso" />
+    </label>
+    <label>
+        Ubicazione:
+        <InputText @bind-Value="classe.Ubicazione" />
+    </label>
+    <label>
+        Multimediale:
+        <InputCheckbox @bind-Value="classe.IsMultimediale" />
+    </label>
+
+    <button type="submit">Aggiungi</button>
+</EditForm>
+
+
+@if (Classi == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -19,18 +43,18 @@ else
             <tr>
                 <th>Sigla classe</th>
                 <th>Classe</th>
-                <th>Numero studenti</th>
-                <th>Lista studenti</th>
+                <th>Ubicazione</th>
+                <th>Multimediale</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in ClassiStudenti)
+            @foreach (var item in Classi)
             {
                 <tr>
-                    <td>@item.SiglaClasse</td>
+                    <td>@item.Sigla.ToUpper()</td>
                     <td>@item.NomeEsteso</td>
-                    <td>@item.NumeroStudenti</td>
-                    <td>@item.ListaStudenti</td>
+                    <td>@item.Ubicazione</td>
+                    <td>@item.IsMultimediale</td>
                 </tr>
             }
         </tbody>
@@ -38,12 +62,27 @@ else
 }
 
 @code {
-    private int minimaEta = 0;
-    private List<ClasseStudenti> ClassiStudenti;
+    private Classe classe = new();
+    private List<Classe> Classi;
+
+    private void AddUpdate()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Classi?.Add(classe);
+        context.SaveChangesAsync();
+        classe = new();
+        LoadClassi();
+    }
 
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        ClassiStudenti = context.ClassiStudenti?.ToList();
+        LoadClassi();
+    }
+
+    private void LoadClassi()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Classi = context.Classi?.ToList();
     }
 }

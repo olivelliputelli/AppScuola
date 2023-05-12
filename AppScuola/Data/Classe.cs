@@ -5,8 +5,10 @@ namespace AppScuola.Data
     public class Classe
     {
         [Key]
-        [StringLength(5)]  
+        [Required]
+        [StringLength(5)]
         public string Sigla { get; set; }
+
         [Required]
         public string NomeEsteso { get; set; }
         public string? Ubicazione { get; set; }
