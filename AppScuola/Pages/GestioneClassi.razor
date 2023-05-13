@@ -45,6 +45,7 @@ else
                 <th>Classe</th>
                 <th>Ubicazione</th>
                 <th>Multimediale</th>
+                <th>Studenti</th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +56,14 @@ else
                     <td>@item.NomeEsteso</td>
                     <td>@item.Ubicazione</td>
                     <td>@item.IsMultimediale</td>
+                    <td>
+                        <ul>
+                            @foreach (var s in item.Studenti)
+                            {
+                                <li>@s.Nominativo</li>
+                            }
+                        </ul>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -76,13 +85,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        using var context = DbFactory.CreateDbContext();
         LoadClassi();
     }
 
     private void LoadClassi()
     {
         using var context = DbFactory.CreateDbContext();
-        Classi = context.Classi?.ToList();
+        Classi = context.Classi
+        .Include(s => s.Studenti)
+        .ToList();
     }
 }

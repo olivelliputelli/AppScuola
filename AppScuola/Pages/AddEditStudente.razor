@@ -1,0 +1,73 @@
+﻿@page "/addeditstudente"
+
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager Navigation
+
+<h3>ADD UPDATE Studente</h3>
+
+<EditForm Model="studente" OnValidSubmit="AddUpdate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>
+        Nominativo:
+        <InputText @bind-Value="studente.Nominativo" />
+    </label>
+    <label>
+        Nato il:
+        <InputDate @bind-Value="studente.DataDiNascita" />
+    </label>
+    <label>
+        Genere:
+        <InputSelect @bind-Value="studente.Genere">
+            <option value="Femmina">Femmina</option>
+            <option value="Maschio">Maschio</option>
+            <option value="Altro">Altro</option>
+        </InputSelect>
+    </label>
+    <label>
+        Fotografia:
+        <InputFile @bind-Value="studente.Foto" />
+    </label>
+    <label>
+        Classe:
+        <InputSelect @bind-Value="studente.SiglaClasse">
+            <option value="">Seleziona classe ...</option>
+            @foreach (var c in Classi)
+            {
+                <option value="@c.Sigla">@c.Sigla</option>
+            }
+        </InputSelect>
+    </label>
+    <button type="button" @onclick="Annulla">Annulla</button>
+    <button type="submit">Aggiungi</button>
+</EditForm>
+
+@code {
+    private Studente studente = new();
+    private List<Classe> Classi;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Classi = context.Classi.ToList();
+    }
+
+
+    private void AddUpdate()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Studenti?.Add(studente);
+        context.SaveChangesAsync();
+        studente = new();
+        Navigation.NavigateTo("gestionestudenti");
+    }
+
+    private void Annulla()
+    {
+        Navigation.NavigateTo("gestionestudenti");
+    }
+
+    public enum Genere { Femmina, Maschio, Altro }
+}

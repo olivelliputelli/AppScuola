@@ -1,0 +1,64 @@
+﻿@page "/gestionestudenti"
+
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager Navigation
+
+
+<PageTitle>Gestione Studenti</PageTitle>
+
+
+<h3>
+    Gestione Studenti
+    <button class="btn btn-primary" @onclick="AddStudente">
+        Nuovo Studente
+    </button>
+
+</h3>
+
+@if (Studenti == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Classe</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Studenti)
+            {
+                <tr>
+                    <td>@item.Nominativo</td>
+                    <td>@item.SiglaClasse.ToUpper()</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Studente> Studenti;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoadStudenti();
+    }
+
+    private void LoadStudenti()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Studenti = context.Studenti.ToList();
+    }
+
+    private void AddStudente()
+    {
+        Navigation.NavigateTo("addeditstudente");
+    }
+}
