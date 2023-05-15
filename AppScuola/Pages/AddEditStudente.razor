@@ -54,7 +54,6 @@
         Classi = context.Classi.ToList();
     }
 
-
     private void AddUpdate()
     {
         using var context = DbFactory.CreateDbContext();
@@ -68,6 +67,4 @@
     {
         Navigation.NavigateTo("gestionestudenti");
     }
-
-    public enum Genere { Femmina, Maschio, Altro }
 }

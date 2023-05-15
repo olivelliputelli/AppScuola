@@ -7,7 +7,9 @@ namespace AppScuola.Data
     {
         public DbSet<ClasseStudenti> ClassiStudenti { get; set; } /* VISTA */
         public DbSet<Classe> Classi { get; set; }
+        public DbSet<Materia> Materie { get; set; }
         public DbSet<Studente> Studenti { get; set; }
+        public DbSet<Verifica> Verifiche { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

@@ -1,0 +1,137 @@
+﻿@page "/gestioneverifiche"
+
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<PageTitle>Gestione Verifiche</PageTitle>
+
+<h1>Verifiche</h1>
+
+<EditForm Model="@Verifiche" OnValidSubmit="AddUpdate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+   
+    <label>
+        Studente:
+        <InputSelect @bind-Value="Verifica.Matricola">
+            <option value="">Seleziona studente ...</option>
+            @foreach (var s in Studenti)
+            {
+                <option value="@s.Matricola">@s.Nominativo</option>
+            }
+        </InputSelect>
+    </label>
+    <label>
+        Materia:
+        <InputSelect @bind-Value="Verifica.MateriaId">
+            <option value="">Seleziona materia ...</option>
+            @foreach (var m in Materie)
+            {
+                <option value="@m.MateriaId">@m.Nome</option>
+            }
+        </InputSelect>
+    </label>
+    <label>
+        Data:
+        <InputDate @bind-Value="Verifica.Data" />
+    </label>
+    <label>
+        Voto:
+        <InputSelect @bind-Value="Verifica.Voto">
+            <option value=1>1</option>
+            <option value=1,5>1 e mezzo</option>
+            <option value=2>2</option>
+            <option value=2,5>1</option>
+            <option value=3>1 e mezzo</option>
+            <option value=3,5>3,5</option>
+            <option value=4>4</option>
+            <option value=4,5>4 e mezzo</option>
+            <option value=5>Cinque</option>
+        </InputSelect>
+    </label>
+    <label>
+        Tipo:
+        <InputSelect @bind-Value="Verifica.Tipo">
+            <option value="S">Scritto</option>
+            <option value="O">Orale</option>
+            <option value="P">Pratico</option>
+        </InputSelect>
+    </label>
+    <button type="submit">Aggiungi</button>
+</EditForm>
+
+
+@if (Verifiche == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Studente</th>
+                <th>Materia</th>
+                <td>Voto</td>
+                <th>Data</th>
+                <td>Tipo</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Verifiche)
+            {
+                <tr>
+                    <td>@item.Studente.Nominativo</td>
+                    <td>@item.Materia.Nome</td>
+                    <td>@item.Voto</td>
+                    <td>@item.Data</td>
+                    <td>@item.Tipo</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Verifica Verifica = new();
+    private List<Verifica> Verifiche;
+    private List<Studente> Studenti;
+    private List<Materia> Materie;
+
+    private void AddUpdate()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Verifiche?.Add(Verifica);
+        context.SaveChangesAsync();
+        Verifica = new();
+        LoadVerifiche();
+    }
+
+    private void Delete(Materia mde)
+    {
+        using var context = DbFactory.CreateDbContext();
+        context?.Remove(mde);
+        context?.SaveChanges();
+        LoadVerifiche();
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Materie = context.Materie.ToList();
+        Studenti = context.Studenti.ToList();
+        LoadVerifiche();
+    }
+
+    private void LoadVerifiche()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Verifiche = context.Verifiche
+        .Include(v => v.Studente)
+        .Include(v => v.Materia)
+        .ToList();
+    }
+}

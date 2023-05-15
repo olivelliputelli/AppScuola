@@ -1,0 +1,85 @@
+﻿@page "/gestionematerie"
+
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<PageTitle>Gestione Materie</PageTitle>
+
+<h1>Materie</h1>
+
+<EditForm Model="@Materia" OnValidSubmit="AddUpdate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>
+        Nome:
+        <InputText @bind-Value="Materia.Nome" />
+    </label>
+    <label>
+        Prezzo libro:
+        <InputNumber @bind-Value="Materia.PrezzoLibro" />
+    </label>
+    <button type="submit">Aggiungi</button>
+</EditForm>
+
+
+@if (Materie == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Prezzo libro</th>
+                <th>Operazioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Materie)
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@($"{item.PrezzoLibro:C2}")</td>
+                    <td><button @onclick="@(() => Delete(item))">Elimina</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Materia Materia = new();
+    private List<Materia> Materie;
+
+    private void AddUpdate()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Materie?.Add(Materia);
+        context.SaveChangesAsync();
+        Materia = new();
+        LoadMaterie();
+    }
+
+    private void Delete(Materia mde)
+    {
+        using var context = DbFactory.CreateDbContext();
+        context?.Remove(mde);
+        context?.SaveChanges();
+        LoadMaterie();
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoadMaterie();
+    }
+
+    private void LoadMaterie()
+    {
+        using var context = DbFactory.CreateDbContext();
+        Materie = context.Materie.ToList();
+    }
+}
