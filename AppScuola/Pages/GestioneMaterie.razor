@@ -1,7 +1,6 @@
 ﻿@page "/gestionematerie"
 
 @using Microsoft.EntityFrameworkCore
-
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 
 <PageTitle>Gestione Materie</PageTitle>
@@ -21,7 +20,6 @@
     </label>
     <button type="submit">Aggiungi</button>
 </EditForm>
-
 
 @if (Materie == null)
 {

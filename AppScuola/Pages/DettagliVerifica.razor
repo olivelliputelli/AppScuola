@@ -1,0 +1,18 @@
+﻿@page "/verifiche"
+
+<h3>Dettagli Verifica di @Verifica.Matricola</h3>
+
+@code {
+    [Parameter]
+    public Verifica Verifica { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public DateTime? Data { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int MateriaId { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public Guid Matricola { get; set; }
+
+}

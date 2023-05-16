@@ -1,8 +1,8 @@
 ﻿@page "/gestioneverifiche"
 
 @using Microsoft.EntityFrameworkCore
-
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager Navigation
 
 <PageTitle>Gestione Verifiche</PageTitle>
 
@@ -11,7 +11,6 @@
 <EditForm Model="@Verifiche" OnValidSubmit="AddUpdate">
     <DataAnnotationsValidator />
     <ValidationSummary />
-   
     <label>
         Studente:
         <InputSelect @bind-Value="Verifica.Matricola">
@@ -76,6 +75,7 @@ else
                 <td>Voto</td>
                 <th>Data</th>
                 <td>Tipo</td>
+                <td>Operazioni</td>
             </tr>
         </thead>
         <tbody>
@@ -87,7 +87,8 @@ else
                     <td>@item.Voto</td>
                     <td>@item.Data</td>
                     <td>@item.Tipo</td>
-
+                    <td>
+                        <button @onclick="@(() => Dettagli(item))">Dettagli</button></td>
                 </tr>
             }
         </tbody>
@@ -117,6 +118,13 @@ else
         LoadVerifiche();
     }
 
+    private void Dettagli(Verifica v)
+    {
+        Navigation.NavigateTo($"/verifiche/Data={v.Data}&Matricola={v.Matricola}&MateriaId={v.MateriaId}");
+        //Navigation.NavigateTo($"verifiche/{v}");
+
+
+    }
 
     protected override async Task OnInitializedAsync()
     {

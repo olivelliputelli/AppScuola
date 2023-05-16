@@ -59,7 +59,7 @@
         using var context = DbFactory.CreateDbContext();
         context.Studenti?.Add(studente);
         context.SaveChangesAsync();
-        studente = new();
+        //studente = new();
         Navigation.NavigateTo("gestionestudenti");
     }
 

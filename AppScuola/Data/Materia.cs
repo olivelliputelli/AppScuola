@@ -9,8 +9,8 @@ namespace AppScuola.Data
         [Required]
         [MaxLength(100)]
         public string Nome { get; set; } = String.Empty;
-        [Range(0, 10_000_000)]
+        [Range(0, 10_000)]
         public decimal PrezzoLibro { get; set; }
-        public List<Verifica> Verifiche { get; set; }
+        public List<Verifica>? Verifiche { get; set; }
     }
 }

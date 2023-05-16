@@ -18,7 +18,6 @@ namespace AppScuola.Data
 
         [Required]
         public int MateriaId { get; set; }
-
         public Materia Materia { get; set; }
 
         [Required]

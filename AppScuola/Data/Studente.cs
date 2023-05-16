@@ -12,7 +12,7 @@ namespace AppScuola.Data
         [Required]
         public string Nominativo { get; set; } = string.Empty;
         public byte[]? Foto { get; set;}
-        public DateTime? DataDiNascita { get; set; } = DateTime.Today;
+        public DateTime? DataDiNascita { get; set; } = new DateTime(DateTime.Now.Year-15, 1,1);
         public string? Genere { get; set; }
 
         [ForeignKey("Classe")]
