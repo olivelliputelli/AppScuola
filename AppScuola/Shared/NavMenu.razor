@@ -24,21 +24,24 @@
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="gestioneclassi">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Classi
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="gestionestudenti">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Studenti
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="gestionematerie">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Materie
-            </NavLink>
-        </div>
+        @* <AuthorizeView Roles="Segretaria">*@
+        <AuthorizeView>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="gestioneclassi">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Classi
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="gestionestudenti">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Studenti
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="gestionematerie">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Materie
+                </NavLink>
+            </div>
+        </AuthorizeView>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="gestioneverifiche">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Verifiche

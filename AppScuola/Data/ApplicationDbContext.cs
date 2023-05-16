@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace AppScuola.Data
 {
@@ -18,7 +19,13 @@ namespace AppScuola.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ClasseStudenti>()
-                .ToView("ClassiStudenti");
+            .ToView("ClassiStudenti");
+
+
+       //     modelBuilder.Entity<Verifica>()
+       //.HasKey(e => new { e.Data, e.MateriaId, e.Matricola });
+
+
         }
     }
 }

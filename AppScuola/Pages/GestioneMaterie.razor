@@ -1,7 +1,13 @@
 ﻿@page "/gestionematerie"
+@attribute [Authorize]
+@*@attribute [Authorize(Roles = "Admin, Superuser")]*@
 
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<AuthorizeView>
+    <p>Hello, @context.User.Identity.Name!</p>
+</AuthorizeView>
 
 <PageTitle>Gestione Materie</PageTitle>
 
