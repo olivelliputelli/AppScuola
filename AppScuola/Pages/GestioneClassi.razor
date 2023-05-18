@@ -1,8 +1,10 @@
 ﻿@page "/gestioneclassi"
+@attribute [Authorize]
 
 @using Microsoft.EntityFrameworkCore
 
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager Navigation
 
 <PageTitle>Gestione Classi</PageTitle>
 
@@ -43,9 +45,7 @@ else
             <tr>
                 <th>Sigla classe</th>
                 <th>Classe</th>
-                <th>Ubicazione</th>
-                <th>Multimediale</th>
-                <th>Studenti</th>
+                <th>Dettagli</th>
             </tr>
         </thead>
         <tbody>
@@ -53,16 +53,9 @@ else
             {
                 <tr>
                     <td>@item.Sigla.ToUpper()</td>
-                    <td>@item.NomeEsteso</td>
-                    <td>@item.Ubicazione</td>
                     <td>@item.IsMultimediale</td>
                     <td>
-                        <ul>
-                            @foreach (var s in item.Studenti)
-                            {
-                                <li>@s.Nominativo</li>
-                            }
-                        </ul>
+                        <button @onclick="@(() => Dettagli(item.Sigla))">Dettagli</button>
                     </td>
                 </tr>
             }
@@ -81,6 +74,11 @@ else
         context.SaveChangesAsync();
         classe = new();
         LoadClassi();
+    }
+
+    private void Dettagli(string sigla)
+    {
+        Navigation.NavigateTo($"/classe/{sigla}");
     }
 
     protected override async Task OnInitializedAsync()

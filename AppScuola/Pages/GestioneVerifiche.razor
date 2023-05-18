@@ -7,59 +7,60 @@
 <PageTitle>Gestione Verifiche</PageTitle>
 
 <h1>Verifiche</h1>
+<AuthorizeView Context="c2">
+    <EditForm Model="@Verifiche" OnValidSubmit="AddUpdate">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label>
+            Studente:
+            <InputSelect @bind-Value="Verifica.Matricola">
+                <option value="">Seleziona studente ...</option>
+                @foreach (var s in Studenti)
+                {
+                    <option value="@s.Matricola">@s.Nominativo</option>
+                }
+            </InputSelect>
+        </label>
+        <label>
+            Materia:
+            <InputSelect @bind-Value="Verifica.MateriaId">
+                <option value="">Seleziona materia ...</option>
+                @foreach (var m in Materie)
+                {
+                    <option value="@m.MateriaId">@m.Nome</option>
+                }
+            </InputSelect>
+        </label>
+        <label>
+            Data:
+            <InputDate @bind-Value="Verifica.Data" />
+        </label>
+        <label>
+            Voto:
+            <InputSelect @bind-Value="Verifica.Voto">
+                <option value=1>1</option>
+                <option value=1,5>1 e mezzo</option>
+                <option value=2>2</option>
+                <option value=2,5>1</option>
+                <option value=3>1 e mezzo</option>
+                <option value=3,5>3,5</option>
+                <option value=4>4</option>
+                <option value=4,5>4 e mezzo</option>
+                <option value=5>Cinque</option>
+            </InputSelect>
+        </label>
+        <label>
+            Tipo:
+            <InputSelect @bind-Value="Verifica.Tipo">
+                <option value="S">Scritto</option>
+                <option value="O">Orale</option>
+                <option value="P">Pratico</option>
+            </InputSelect>
+        </label>
+        <button type="submit">Aggiungi</button>
+    </EditForm>
 
-<EditForm Model="@Verifiche" OnValidSubmit="AddUpdate">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <label>
-        Studente:
-        <InputSelect @bind-Value="Verifica.Matricola">
-            <option value="">Seleziona studente ...</option>
-            @foreach (var s in Studenti)
-            {
-                <option value="@s.Matricola">@s.Nominativo</option>
-            }
-        </InputSelect>
-    </label>
-    <label>
-        Materia:
-        <InputSelect @bind-Value="Verifica.MateriaId">
-            <option value="">Seleziona materia ...</option>
-            @foreach (var m in Materie)
-            {
-                <option value="@m.MateriaId">@m.Nome</option>
-            }
-        </InputSelect>
-    </label>
-    <label>
-        Data:
-        <InputDate @bind-Value="Verifica.Data" />
-    </label>
-    <label>
-        Voto:
-        <InputSelect @bind-Value="Verifica.Voto">
-            <option value=1>1</option>
-            <option value=1,5>1 e mezzo</option>
-            <option value=2>2</option>
-            <option value=2,5>1</option>
-            <option value=3>1 e mezzo</option>
-            <option value=3,5>3,5</option>
-            <option value=4>4</option>
-            <option value=4,5>4 e mezzo</option>
-            <option value=5>Cinque</option>
-        </InputSelect>
-    </label>
-    <label>
-        Tipo:
-        <InputSelect @bind-Value="Verifica.Tipo">
-            <option value="S">Scritto</option>
-            <option value="O">Orale</option>
-            <option value="P">Pratico</option>
-        </InputSelect>
-    </label>
-    <button type="submit">Aggiungi</button>
-</EditForm>
-
+</AuthorizeView>
 
 @if (Verifiche == null)
 {
@@ -72,10 +73,12 @@ else
             <tr>
                 <th>Studente</th>
                 <th>Materia</th>
-                <td>Voto</td>
+                <th>Voto</th>
                 <th>Data</th>
-                <td>Tipo</td>
-                <td>Operazioni</td>
+                <th>Tipo</th>
+                <AuthorizeView>
+                    <td>Operazioni</td>
+                </AuthorizeView>
             </tr>
         </thead>
         <tbody>
@@ -87,8 +90,11 @@ else
                     <td>@item.Voto</td>
                     <td>@item.Data</td>
                     <td>@item.Tipo</td>
-                    <td>
-                        <button @onclick="@(() => Dettagli(item))">Dettagli</button></td>
+                    <AuthorizeView>
+                        <td>
+                            <button @onclick="@(() => Dettagli(item))">Dettagli</button>
+                        </td>
+                    </AuthorizeView>
                 </tr>
             }
         </tbody>
@@ -122,8 +128,6 @@ else
     {
         Navigation.NavigateTo($"/verifiche/Data={v.Data}&Matricola={v.Matricola}&MateriaId={v.MateriaId}");
         //Navigation.NavigateTo($"verifiche/{v}");
-
-
     }
 
     protected override async Task OnInitializedAsync()

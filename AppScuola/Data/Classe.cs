@@ -14,6 +14,8 @@ namespace AppScuola.Data
         public string NomeEsteso { get; set; }
         public string? Ubicazione { get; set; }
         public bool IsMultimediale { get; set; } = false;
+        public double? Longitudine { get; set; } = 12.4963655;
+        public double? Latitudine { get; set; } = 41.9027835;
         public List<Studente>? Studenti { get; set; }
     }
 }
