@@ -26,6 +26,7 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th>Qr Code</th>
                 <th>Nome</th>
                 <th>Classe</th>
             </tr>
@@ -34,6 +35,10 @@ else
             @foreach (var item in Studenti)
             {
                 <tr>
+                    <td>
+                        <SfBarcodeGenerator Width="200px" Height="150px"
+                                    Type="@BarcodeType.Codabar" Value=@item.Matricola.ToString()></SfBarcodeGenerator>
+                    </td>
                     <td>@item.Nominativo</td>
                     <td>@item.SiglaClasse.ToUpper()</td>
                 </tr>
