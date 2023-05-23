@@ -5,6 +5,7 @@
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 @inject NavigationManager Navigation
 
+<a href="gestioneclassi">Torna alle classi</a>
 <h3>Classe: @Classe.Sigla</h3>
 
 <Map @ref="mapRef" MapOptions="@mapOptions"></Map>
@@ -19,15 +20,11 @@ Studenti:
 </ul>
 
 
-@Classe.Longitudine
-@Classe.Latitudine
-
 <style>
     #mapId {
         height: 400px;
     }
 </style>
-
 
 @code {
     [Parameter]
@@ -36,9 +33,6 @@ Studenti:
     private Classe Classe = new();
 
     private Map mapRef;
-
-    private Marker marker1;
-
 
     private MapOptions mapOptions = new MapOptions()
         {
@@ -64,6 +58,7 @@ Studenti:
         .FirstOrDefault();
 
         mapOptions.Center = new LatLng(Classe.Latitudine.Value, Classe.Longitudine.Value);
+
     }
 
 }

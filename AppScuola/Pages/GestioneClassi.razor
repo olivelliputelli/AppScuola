@@ -1,4 +1,5 @@
 ﻿@page "/gestioneclassi"
+@*@attribute [Authorize(Roles ="Admin, Tecnico")]*@
 @attribute [Authorize]
 
 @using Microsoft.EntityFrameworkCore
@@ -9,6 +10,7 @@
 <PageTitle>Gestione Classi</PageTitle>
 
 <h1>Classi</h1>
+
 
 <EditForm Model="@classe" OnValidSubmit="AddUpdate">
     <DataAnnotationsValidator />

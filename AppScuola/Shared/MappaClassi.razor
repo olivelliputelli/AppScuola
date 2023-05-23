@@ -1,0 +1,17 @@
+﻿@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager Navigation
+
+<h2>Classi</h2>
+<Mappa Classi="@listaClassi" />
+
+@code{
+    private List<Classe> listaClassi = new List<Classe>();
+    protected override void OnInitialized()
+    {
+        using var context = DbFactory.CreateDbContext();
+        listaClassi = context.Classi.ToList();
+    }
+}
+

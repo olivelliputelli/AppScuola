@@ -1,0 +1,16 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
+<div id="mapid"></div>
+
+@code {
+    [Parameter] public List<Classe> Classi { get; set; }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync(
+            "MappaClassi.mostraMappa",
+            "mapid",
+            Classi);
+    }
+}
+
