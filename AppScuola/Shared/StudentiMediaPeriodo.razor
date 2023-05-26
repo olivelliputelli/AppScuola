@@ -1,0 +1,77 @@
+﻿@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<h3>Studenti Media Periodo</h3>
+<p>
+    Da
+    <input type="date" @bind-value=@dInizio />
+    a
+    <input type="date" @bind-value=@dFine />
+    <button @onclick="Filtra">Filtra</button>
+</p>
+
+@if (StudentiMedia == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Studente</th>
+                <th>Media</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in StudentiMedia)
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@item.Media</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private DateTime dInizio = new DateTime(DateTime.Now.Year - 1, 9, 1);
+    private DateTime dFine = DateTime.Now;
+    private List<Verifica> Verifiche;
+    private List<StudenteMedia> StudentiMedia;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoadVerifiche(dInizio, dFine);
+    }
+
+    private void LoadVerifiche(DateTime dI, DateTime dF)
+    {
+        using var context = DbFactory.CreateDbContext();
+        StudentiMedia = context.Verifiche
+        .Where(v => v.Data >= dI && v.Data <= dF)
+        .Include(v => v.Studente)
+        .GroupBy(s => s.Studente.Nominativo, 
+            (k, c) => new StudenteMedia()
+            {
+                Nome = k,
+                Media = c.Average(v => v.Voto)
+            }
+        )
+        .ToList();
+    }
+
+    private void Filtra()
+    {
+        LoadVerifiche(dInizio, dFine);
+
+    }
+
+    class StudenteMedia
+    {
+        public string Nome { get; set; }
+        public decimal Media { get; set; }
+    }
+}
