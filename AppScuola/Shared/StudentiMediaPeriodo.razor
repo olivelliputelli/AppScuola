@@ -55,12 +55,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        LoadVerifiche(dInizio, dFine);
+        LoadVerifiche(dInizio, dFine, tipo);
     }
 
-    private void LoadVerifiche(DateTime dI, DateTime dF)
+    private void LoadVerifiche(DateTime dI, DateTime dF, string tipo)
     {
         using var context = DbFactory.CreateDbContext();
+        // SQL raw
+        // StudentiMedia = context.StudentiMedia.FromSql($"select s.Matricola, s.Nominativo, COUNT(*) as Numero, AVG(v.Voto) as Media from Verifiche v, Studenti s where v.Matricola = s.Matricola and v.Data between {dI} and {dF} and({tipo} = '' or v.Tipo = {tipo}) group by s.Matricola, s.Nominativo").ToList();
+
+        // LINQ con EF Core
         StudentiMedia = context.Verifiche
         .Where(v => v.Data >= dI && v.Data <= dF)
         .Where(v => String.IsNullOrEmpty(tipo) || v.Tipo == tipo)
@@ -79,15 +83,6 @@ else
 
     private void Filtra()
     {
-        LoadVerifiche(dInizio, dFine);
-
-    }
-
-    class StudenteMedia
-    {
-        public Guid Matricola { get; set; }
-        public string Nominativo { get; set; }
-        public int Numero { get; set; }
-        public decimal Media { get; set; }
+        LoadVerifiche(dInizio, dFine, tipo);
     }
 }

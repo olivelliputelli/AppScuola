@@ -1,53 +1,17 @@
 ﻿@page "/"
 
-@using Microsoft.EntityFrameworkCore
-@inject IDbContextFactory<ApplicationDbContext> DbFactory
-
 <PageTitle>Index</PageTitle>
 
+
+<SqlRaw />
+
+<!--
 <StudentiMediaPeriodo />
 
 <hr />
-
 <MappaClassi />
 
-<h1> Vista ClassiStudenti</h1>
+<hr />
+<ClassiStudentiVista />
+-->
 
-@if (ClassiStudenti == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Sigla classe</th>
-                <th>Classe</th>
-                <th>Numero studenti</th>
-                <th>Lista studenti</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ClassiStudenti)
-            {
-                <tr>
-                    <td>@item.SiglaClasse</td>
-                    <td>@item.NomeEsteso</td>
-                    <td>@item.NumeroStudenti</td>
-                    <td>@item.ListaStudenti</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-@code {
-    private List<ClasseStudenti> ClassiStudenti;
-
-    protected override async Task OnInitializedAsync()
-    {
-        using var context = DbFactory.CreateDbContext();
-        ClassiStudenti = context.ClassiStudenti?.ToList();
-    }
-}

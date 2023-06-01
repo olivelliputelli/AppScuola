@@ -36,9 +36,11 @@ else
             {
                 <tr>
                     <td>
-                        <SfBarcodeGenerator Width="200px" Height="150px"
+                  @*      <SfBarcodeGenerator Width="200px" Height="150px"
                                     Type="@BarcodeType.Codabar" Value=@item.Matricola.ToString()></SfBarcodeGenerator>
-                    </td>
+                                    *@
+                        @item.Matricola
+    </td>
                     <td>@item.Nominativo</td>
                     <td>@item.SiglaClasse.ToUpper()</td>
                 </tr>

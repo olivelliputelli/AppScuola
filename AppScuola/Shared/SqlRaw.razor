@@ -1,0 +1,65 @@
+﻿@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<h3>SQL raw</h3>
+<p>
+    <select @bind=@genere>
+        <option value="">Tutte</option>
+        <option value="Maschio">Maschio</option>
+        <option value="Femmina">Femmina</option>
+        <option value="Altro">Altro</option>
+    </select>
+    <button @onclick="Filtra">Filtra</button>
+</p>
+
+@if (ClassiNumeroStudentiPerGenere == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Classe</th>
+                <th>Nome</th>
+                <th>Numero studenti @genere</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ClassiNumeroStudentiPerGenere)
+            {
+                <tr>
+                    <td>@item.SiglaClasse</td>
+                    <td>@item.NomeClasse</td>
+                    <td>@item.NumeroStudenti</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string genere = "";
+
+    private List<ClasseNumeroStudenti> ClassiNumeroStudentiPerGenere;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoadItems(genere);
+    }
+
+    private void LoadItems(string genere)
+    {
+        using var context = DbFactory.CreateDbContext();
+        // SQL raw
+        ClassiNumeroStudentiPerGenere = context
+        .ClassiNumeroStudenti
+        .FromSql($"select c.Sigla as SiglaClasse, c.NomeEsteso as NomeClasse, COUNT(s.Matricola) as NumeroStudenti from Classi c left join Studenti s on c.Sigla = s.SiglaClasse where {genere} = '' or s.Genere = {genere} group by c.Sigla, c.NomeEsteso").ToList();
+    }
+
+    private void Filtra()
+    {
+        LoadItems(genere);
+    }
+}

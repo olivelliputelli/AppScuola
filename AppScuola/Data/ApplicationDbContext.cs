@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata;
 
 namespace AppScuola.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        [NotMapped]
+        public DbSet<ClasseNumeroStudenti> ClassiNumeroStudenti { get; set; }
+        [NotMapped]
+        public DbSet<StudenteMedia> StudentiMedia { get; set; }
         public DbSet<ClasseStudenti> ClassiStudenti { get; set; } /* VISTA */
         public DbSet<Classe> Classi { get; set; }
         public DbSet<Materia> Materie { get; set; }
