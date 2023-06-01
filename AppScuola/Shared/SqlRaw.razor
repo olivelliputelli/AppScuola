@@ -21,7 +21,8 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Classe</th>
+                <th>Logo</th>
+                <th>Classe </th>
                 <th>Nome</th>
                 <th>Numero studenti @genere</th>
             </tr>
@@ -30,7 +31,11 @@ else
             @foreach (var item in ClassiNumeroStudentiPerGenere)
             {
                 <tr>
-                    <td>@item.SiglaClasse</td>
+                    <td>
+                        <img src="/img/classilogo/@(item.SiglaClasse).svg" alt="Logo della @item.NomeClasse" />
+                    </td>
+                    <td>@item.SiglaClasse
+                       </td>
                     <td>@item.NomeClasse</td>
                     <td>@item.NumeroStudenti</td>
                 </tr>
