@@ -62,7 +62,7 @@ else
     {
         using var context = DbFactory.CreateDbContext();
         // SQL raw
-        // StudentiMedia = context.StudentiMedia.FromSql($"select s.Matricola, s.Nominativo, COUNT(*) as Numero, AVG(v.Voto) as Media from Verifiche v, Studenti s where v.Matricola = s.Matricola and v.Data between {dI} and {dF} and({tipo} = '' or v.Tipo = {tipo}) group by s.Matricola, s.Nominativo").ToList();
+        // StudentiMedia = context.StudentiMedia.FromSql($"select s.Matricola, s.Nominativo, COUNT(*) as Numero, AVG(v.Voto) as Media from Verifiche v, Studenti s where v.Matricola = s.Matricola and v.Data between {dI} and {dF} and ({tipo} = '' or v.Tipo = {tipo}) group by s.Matricola, s.Nominativo").ToList();
 
         // LINQ con EF Core
         StudentiMedia = context.Verifiche

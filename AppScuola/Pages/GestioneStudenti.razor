@@ -1,13 +1,10 @@
 ﻿@page "/gestionestudenti"
 
 @using Microsoft.EntityFrameworkCore
-
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 @inject NavigationManager Navigation
 
-
 <PageTitle>Gestione Studenti</PageTitle>
-
 
 <h3>
     Gestione Studenti
@@ -60,7 +57,11 @@ else
     private void LoadStudenti()
     {
         using var context = DbFactory.CreateDbContext();
+        // LINQ
         Studenti = context.Studenti.ToList();
+
+        // SQL Raw
+        //Studenti = context.Studenti.FromSql($"select * from Studenti").ToList();
     }
 
     private void AddStudente()

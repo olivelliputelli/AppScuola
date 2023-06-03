@@ -24,7 +24,7 @@ else
                 <th>Logo</th>
                 <th>Classe </th>
                 <th>Nome</th>
-                <th>Numero studenti @messaggio</th>
+                <th>Numero studenti @genere || @messaggio</th>
             </tr>
         </thead>
         <tbody>
@@ -32,7 +32,8 @@ else
             {
                 <tr>
                     <td>
-                        <img src="/img/classilogo/@(item.SiglaClasse).svg" alt="Logo della @item.NomeClasse" />
+                        <img src="/img/classilogo/@(item.SiglaClasse).svg" 
+                        alt="Logo della @item.NomeClasse" />
                     </td>
                     <td>
                         @item.SiglaClasse
